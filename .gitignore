@@ -1,3 +1,5 @@
 node_modules
 .env
+builda
+database.sqlite
 build
