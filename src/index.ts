@@ -4,7 +4,8 @@ import swaggerUi, { SwaggerOptions } from 'swagger-ui-express';
 import * as path from 'path';
 import dotenv from 'dotenv';
 
-import { router as dashboardRouter } from './routes/dashboardRutes';
+import { dashboardRouter } from './routes/dashboardRoutes';
+import { usersRouter } from './routes/usersRouter';
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ const app: Express = express();
 
 const port = process.env.PORT || 3000;
 
-const enviroment = process.env.NODE_ENV;
+const enviroment = process.env.APP_ENV;
 
 try {
   if (!enviroment) {
@@ -40,6 +41,7 @@ try {
 }
 
 app.use('/', dashboardRouter);
+app.use('/users', usersRouter);
 
 app.get('*', (req: Request, res: Response) => {
   res.status(404).json({
