@@ -1,17 +1,15 @@
 import { DataSource } from 'typeorm';
 
 const dataSource = new DataSource({
-  type: 'sqlite',
-  database: 'database.sqlite',
-  //   host: 'localhost',
-  //   port: 3306,
-  //   username: 'root',
-  //   password: 'admin',
-  //   database: 'db1',
+  type: 'mariadb',
+  database: 'mjapp-express',
+  host: 'localhost',
+  port: 3306,
+  username: 'root',
+  password: 'root1',
   logging: true,
   migrations: [__dirname + '/migration/*.ts'],
   entities: [__dirname + '/entity/*{.js,.ts}']
-  //   synchronize: true
 });
 
 dataSource
