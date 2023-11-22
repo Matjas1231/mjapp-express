@@ -3,6 +3,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi, { SwaggerOptions } from 'swagger-ui-express';
 import * as path from 'path';
 import dotenv from 'dotenv';
+import 'reflect-metadata';
 
 import { dashboardRouter } from './routes/dashboardRoutes';
 import { usersRouter } from './routes/usersRouter';
