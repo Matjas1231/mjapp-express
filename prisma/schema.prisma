@@ -23,8 +23,10 @@ model Worker {
 }
 
 model Department {
-  name   String   @id
-  Worker Worker[]
+  name       String   @id
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt()
+  Worker     Worker[]
 }
 
 generator client {
