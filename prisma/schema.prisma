@@ -7,6 +7,27 @@ model User {
   email String
 }
 
+model Worker {
+  id           Int         @id @default(autoincrement())
+  first_name   String
+  last_name    String
+  position     String
+  phone        String
+  department   Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
+  created_at   DateTime    @default(now())
+  updated_at   DateTime    @default(now()) @updatedAt()
+  departmentId Int?
+
+  @@index([first_name])
+  @@index([last_name])
+}
+
+model Department {
+  id     Int      @id @default(autoincrement())
+  name   String
+  Worker Worker[]
+}
+
 generator client {
   provider = "prisma-client-js"
 }
