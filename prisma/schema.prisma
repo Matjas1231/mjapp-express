@@ -8,15 +8,15 @@ model User {
 }
 
 model Worker {
-  id           Int         @id @default(autoincrement())
-  first_name   String
-  last_name    String
-  position     String
-  phone        String
-  department   Department? @relation(fields: [departmentId], references: [id], onDelete: SetNull)
-  created_at   DateTime    @default(now())
-  updated_at   DateTime    @default(now()) @updatedAt()
-  departmentId Int?
+  id            Int         @id @default(autoincrement())
+  first_name    String
+  last_name     String
+  position      String
+  phone         String
+  department    Department? @relation(fields: [department_id], references: [id], onDelete: SetNull)
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @default(now()) @updatedAt()
+  department_id Int?
 
   @@index([first_name])
   @@index([last_name])
