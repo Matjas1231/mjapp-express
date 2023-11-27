@@ -5,6 +5,7 @@ type Worker = {
   first_name: string;
   last_name: string;
   position: string;
+  deparatment?: string;
   phone: string;
 };
 
@@ -12,6 +13,8 @@ type User = {
   name: string;
   email: string;
 };
+
+const departmentNames = ['IT', 'Production', 'Finance'];
 
 const createRandomWorker = (): Worker => {
   return {
@@ -33,7 +36,8 @@ const insertWorkers = async (resources: Worker[]) => {
   for (const worker of resources) {
     await prisma.worker.create({
       data: {
-        ...worker
+        ...worker,
+        department_name: departmentNames[Math.floor(Math.random() * departmentNames.length)]
       }
     });
   }
@@ -49,9 +53,20 @@ const inserUsers = async (resources: User[]) => {
   }
 };
 
+const insertDepartments = async () => {
+  for (const department of departmentNames) {
+    await prisma.department.create({
+      data: {
+        name: department
+      }
+    });
+  }
+};
+
 const main = async () => {
+  await insertDepartments();
   const workers = faker.helpers.multiple(createRandomWorker, {
-    count: 100
+    count: 500
   });
 
   const users = faker.helpers.multiple(createRandomUser, {
