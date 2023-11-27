@@ -1,17 +1,17 @@
 import express, { Express, Request, Response } from 'express';
-import swaggerJSDoc from 'swagger-jsdoc';
-import swaggerUi, { SwaggerOptions } from 'swagger-ui-express';
+import swaggerUi from 'swagger-ui-express';
 import * as path from 'path';
 import dotenv from 'dotenv';
-
+import YAML from 'yamljs';
 import { dashboardRouter } from './routes/dashboardRoutes';
 import { usersRouter } from './routes/usersRouter';
+import { workersRouter } from './routes/workerRoutes';
 
 dotenv.config();
 
 const app: Express = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.APP_PORT || 3000;
 
 const enviroment = process.env.APP_ENV;
 
@@ -19,21 +19,9 @@ try {
   if (!enviroment) {
     throw new Error('Błąd konfiguracji środowiska w pli `.env`');
   } else if (['development', 'dev'].includes(enviroment)) {
-    const swaggerOptions: SwaggerOptions = {
-      definition: {
-        openapi: '3.0.0',
-        info: {
-          title: 'Mjapp',
-          version: '1.0.0',
-          description: ''
-        }
-      },
-      apis: [path.resolve(__dirname, './routes/*.ts')]
-    };
+    const swaggerDoc = YAML.load(path.resolve(__dirname, '..', 'swagger.yaml'));
 
-    const swaggerSpec = swaggerJSDoc(swaggerOptions);
-
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
   }
 } catch (error) {
   console.error(error);
@@ -41,6 +29,7 @@ try {
 }
 
 app.use('/', dashboardRouter);
+app.use('/workers', workersRouter);
 app.use('/users', usersRouter);
 
 app.get('*', (req: Request, res: Response) => {
