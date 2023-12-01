@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 export const dashboard = async (req: Request, res: Response) => {
   try {
-    res.status(200).json({
+    return res.status(200).json({
       message: 'Hello from dashboard'
     });
   } catch (error) {
