@@ -4,7 +4,7 @@ import * as path from 'path';
 import dotenv from 'dotenv';
 import yaml from 'js-yaml';
 import { dashboardRouter } from './routes/dashboardRoutes';
-import { usersRouter } from './routes/usersRouter';
+import { userRouter } from './routes/userRouter';
 import { workersRouter } from './routes/workerRoutes';
 import fs from 'fs';
 
@@ -35,7 +35,7 @@ app.use(express.json());
 
 app.use('/', dashboardRouter);
 app.use('/workers', workersRouter);
-app.use('/users', usersRouter);
+app.use('/users', userRouter);
 
 app.get('*', (req: Request, res: Response) => {
   res.status(404).json({
