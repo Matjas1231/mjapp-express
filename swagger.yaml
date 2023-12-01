@@ -1,0 +1,249 @@
+---
+openapi: 3.0.0
+info:
+  title: Mjapp
+  version: '1.0'
+servers:
+  - url: http://127.0.0.1:3000/
+paths:
+  '/':
+    get:
+      summary: Data for dashboard
+      tags:
+        - Dashboard
+      responses:
+        '200':
+          description: success
+
+  '/workers':
+    get:
+      summary: Get all workers
+      tags:
+        - Workers
+      parameters:
+        - in: query
+          name: page
+          description: Page number
+          required: false
+          schema:
+            type: integer
+            default: 1
+        - in: query
+          name: limit
+          description: Items per page
+          required: false
+          schema:
+            type: integer
+            default: 50
+            enum:
+              - 50
+              - 100
+              - 150
+      responses:
+        200:
+          description: Array of fetched workers
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/Meta'
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Worker'
+        204:
+          description: 'No workers in DB'
+    post:
+      summary: Create worker
+      tags:
+        - Workers
+      requestBody:
+        description: body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorker'
+
+      responses:
+        201:
+          description: Worker created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Worker'
+        400:
+          description: Problem during data validation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ValidationError'
+
+  '/workers/{id}':
+    get:
+      summary: Get worker by ID
+      tags:
+        - Workers
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Fetched worker
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/Worker'
+        404:
+          description: 'Worker not found'
+    patch:
+      summary: Update worker
+      tags:
+        - Workers
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateWorker'
+      responses:
+        200:
+          description: Fetched worker
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: '#/components/schemas/CreateWorker'
+        404:
+          description: 'Worker not found'
+
+    delete:
+      summary: Delete worker by ID
+      tags:
+        - Workers
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        204:
+          description: Worker deleted successfully
+        404:
+          description: 'Worker not found'
+
+  '/users':
+    get:
+      summary: Get all users
+      tags:
+        - users
+      responses:
+        200:
+          description: Fetched Users
+  '/users/create':
+    post:
+      summary: Create user
+      tags:
+        - users
+      responses:
+        '201':
+          description: Creating user
+
+components:
+  schemas:
+    Worker:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        last_name:
+          type: string
+        first_name:
+          type: string
+        position:
+          type: string
+        phone:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        department_name:
+          type: string
+          nullable: true
+
+    CreateWorker:
+      type: object
+      properties:
+        first_name:
+          type: string
+          example: 'John'
+        last_name:
+          type: string
+          example: 'Doe'
+        position:
+          type: string
+          example: 'Manager'
+        phone:
+          type: string
+          example: '123-456-7890'
+        department_name:
+          type: string
+          example: 'HR'
+          nullable: true
+
+    ValidationError:
+      type: object
+      properties:
+        type:
+          type: string
+          example: 'field'
+        value:
+          type: string
+          example: 'given value'
+        msg:
+          type: string
+          example: '{field_name} is required'
+        path:
+          type: string
+          example: 'field name'
+        location:
+          type: string
+          example: 'body'
+
+    Meta:
+      type: object
+      properties:
+        total_items:
+          type: integer
+        total_pages:
+          type: integer
+        current_page:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        prev:
+          type: string
+          format: url
+          nullable: true
