@@ -1,11 +1,12 @@
 import express, { Express, Request, Response } from 'express';
-import swaggerUi from 'swagger-ui-express';
+import swaggerUi, { SwaggerOptions } from 'swagger-ui-express';
 import * as path from 'path';
 import dotenv from 'dotenv';
-import YAML from 'yamljs';
+import yaml from 'js-yaml';
 import { dashboardRouter } from './routes/dashboardRoutes';
 import { usersRouter } from './routes/usersRouter';
 import { workersRouter } from './routes/workerRoutes';
+import fs from 'fs';
 
 dotenv.config();
 
@@ -19,7 +20,9 @@ try {
   if (!enviroment) {
     throw new Error('Błąd konfiguracji środowiska w pli `.env`');
   } else if (['development', 'dev'].includes(enviroment)) {
-    const swaggerDoc = YAML.load(path.resolve(__dirname, '..', 'swagger.yaml'));
+    const swaggerDoc = yaml.load(
+      fs.readFileSync(path.resolve(__dirname, '..', 'swagger.yaml'), 'utf8')
+    ) as SwaggerOptions;
 
     app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
   }
