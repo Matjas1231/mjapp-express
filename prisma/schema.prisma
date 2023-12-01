@@ -13,7 +13,7 @@ model Worker {
   last_name       String
   position        String
   phone           String
-  department      Department? @relation(fields: [department_name], references: [name], onDelete: SetNull)
+  department      Department? @relation(fields: [department_name], references: [name])
   created_at      DateTime    @default(now())
   updated_at      DateTime    @default(now()) @updatedAt()
   department_name String?
@@ -26,7 +26,7 @@ model Department {
   name       String   @id
   created_at DateTime @default(now())
   updated_at DateTime @default(now()) @updatedAt()
-  Worker     Worker[]
+  Workers    Worker[]
 }
 
 generator client {
