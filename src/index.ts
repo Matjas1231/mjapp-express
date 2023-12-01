@@ -28,6 +28,8 @@ try {
   process.exit();
 }
 
+app.use(express.json());
+
 app.use('/', dashboardRouter);
 app.use('/workers', workersRouter);
 app.use('/users', usersRouter);
