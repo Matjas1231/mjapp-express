@@ -14,7 +14,7 @@ type User = {
   email: string;
 };
 
-const departmentNames = ['IT', 'Production', 'Finance'];
+const departmentNames = ['HR', 'IT', 'Finance', 'Sales'];
 
 const createRandomWorker = (): Worker => {
   return {
