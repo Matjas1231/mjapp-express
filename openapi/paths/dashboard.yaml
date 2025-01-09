@@ -1,0 +1,8 @@
+'/':
+  get:
+    summary: Data for dashboard
+    tags:
+      - Dashboard
+    responses:
+      '200':
+        description: success
