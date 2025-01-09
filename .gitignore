@@ -5,3 +5,4 @@ database.sqlite
 build
 prisma/*.db
 prisma/*.db-journal
+.idea
